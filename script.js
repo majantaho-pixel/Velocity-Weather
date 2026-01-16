@@ -63,7 +63,7 @@ async function fetchWeather(query) {
       `;
     });
 
-    // Monthly Forecast Chart (Temp trend)
+    // Monthly Forecast Chart (Max & Min Temp)
     const ctx = document.getElementById("monthlyChart").getContext("2d");
     const labels = data.forecast.forecastday.map(d => d.date);
     const maxTemps = data.forecast.forecastday.map(d => d.day.maxtemp_c);
@@ -78,7 +78,10 @@ async function fetchWeather(query) {
           { label: "Min Temp °C", data: minTemps, borderColor: "#1e90ff", fill: false }
         ]
       },
-      options: { responsive: true, plugins: { legend: { position: "top" } } }
+      options: {
+        responsive: true,
+        plugins: { legend: { position: "top" } }
+      }
     });
 
   } catch (error) {
