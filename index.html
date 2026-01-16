@@ -1,17 +1,33 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Velocity Weather</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Velocity Weather 🌍</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<h1>🌦️ Velocity Weather</h1>
+<div class="container">
+  <h1>Velocity Weather 🌍</h1>
+  
+  <!-- City Search -->
+  <div class="search-box">
+    <input type="text" id="city" placeholder="Enter city name" />
+    <button onclick="getWeather()">Search</button>
+  </div>
 
-<input type="text" id="city" placeholder="Enter city name">
-<button onclick="getWeather()">Search</button>
+  <!-- Current Weather -->
+  <div id="current-weather" class="weather-card"></div>
 
-<div id="result"></div>
+  <!-- Hourly Forecast -->
+  <h3>🕒 Hourly Forecast</h3>
+  <div id="hourly-forecast" class="forecast-row"></div>
+
+  <!-- Daily Forecast -->
+  <h3>📅 Daily Forecast</h3>
+  <div id="daily-forecast" class="forecast-row"></div>
+</div>
 
 <script src="script.js"></script>
 </body>
