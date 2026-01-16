@@ -5,16 +5,19 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Velocity Weather 🌍</title>
   <link rel="stylesheet" href="style.css">
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
 
 <div class="container">
   <h1>Velocity Weather 🌍</h1>
-  
-  <!-- City Search -->
+
+  <!-- Search Box -->
   <div class="search-box">
     <input type="text" id="city" placeholder="Enter city name" />
     <button onclick="getWeather()">Search</button>
+    <button onclick="getLocationWeather()">📍 Current Location</button>
   </div>
 
   <!-- Current Weather -->
@@ -27,6 +30,10 @@
   <!-- Daily Forecast -->
   <h3>📅 Daily Forecast</h3>
   <div id="daily-forecast" class="forecast-row"></div>
+
+  <!-- Monthly Forecast Chart -->
+  <h3>📈 Monthly Temperature Forecast</h3>
+  <canvas id="monthlyChart" height="200"></canvas>
 </div>
 
 <script src="script.js"></script>
