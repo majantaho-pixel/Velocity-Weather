@@ -1,5 +1,5 @@
 // WeatherAPI.com key (same as your code)
-const apiKey = "8a6cdd714828679cba758f8f92394d90";
+const apiKey = "4719ddac770bdc212938324e7cf8345f";
 
 let weatherChart = null;
 
