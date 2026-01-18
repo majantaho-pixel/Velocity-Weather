@@ -1,31 +1,48 @@
-const apiKey = "8a6cdd714828679cba758f8f92394d90"; // Replace with your WeatherAPI.com key
+// WeatherAPI.com key (same as your code)
+const apiKey = "8a6cdd714828679cba758f8f92394d90";
+
+let weatherChart = null;
 
 async function getWeather() {
-  const city = document.getElementById("city").value;
-  if (!city) return alert("Please enter a city");
+  const input = document.getElementById("city");
+  const city = input.value.trim();
+
+  if (!city) {
+    alert("Please enter a city");
+    return;
+  }
 
   fetchWeather(city);
 }
 
 function getLocationWeather() {
-  if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(
-      pos => {
-        const lat = pos.coords.latitude;
-        const lon = pos.coords.longitude;
-        fetchWeather(`${lat},${lon}`);
-      },
-      err => alert("Unable to get location")
-    );
-  } else {
+  if (!navigator.geolocation) {
     alert("Geolocation not supported");
+    return;
   }
+
+  navigator.geolocation.getCurrentPosition(
+    pos => {
+      const lat = pos.coords.latitude;
+      const lon = pos.coords.longitude;
+      fetchWeather(`${lat},${lon}`);
+    },
+    () => alert("Unable to get location")
+  );
 }
 
 async function fetchWeather(query) {
   try {
-    const res = await fetch(`https://api.weatherapi.com/v1/forecast.json?key=${apiKey}&q=${query}&days=30&aqi=no&alerts=no`);
+    const res = await fetch(
+      `https://api.weatherapi.com/v1/forecast.json?key=${apiKey}&q=${query}&days=3&aqi=no&alerts=no`
+    );
+
     const data = await res.json();
+
+    // API error handling
+    if (data.error) {
+      throw new Error(data.error.message);
+    }
 
     // Current Weather
     document.getElementById("current-weather").innerHTML = `
@@ -36,7 +53,7 @@ async function fetchWeather(query) {
       <p>🌬️ Wind: ${data.current.wind_kph} kph</p>
     `;
 
-    // Hourly Forecast (Today)
+    // Hourly Forecast
     const hourlyDiv = document.getElementById("hourly-forecast");
     hourlyDiv.innerHTML = "";
     data.forecast.forecastday[0].hour.forEach(hour => {
@@ -56,36 +73,48 @@ async function fetchWeather(query) {
       dailyDiv.innerHTML += `
         <div class="forecast-item">
           <p>${day.date}</p>
-          <p>Max: ${day.day.maxtemp_c}°C</p>
-          <p>Min: ${day.day.mintemp_c}°C</p>
+          <p>⬆ ${day.day.maxtemp_c}°C</p>
+          <p>⬇ ${day.day.mintemp_c}°C</p>
           <p>${day.day.condition.text}</p>
         </div>
       `;
     });
 
-    // Monthly Forecast Chart (Max & Min Temp)
+    // Chart (3-day forecast)
     const ctx = document.getElementById("monthlyChart").getContext("2d");
-    const labels = data.forecast.forecastday.map(d => d.date);
-    const maxTemps = data.forecast.forecastday.map(d => d.day.maxtemp_c);
-    const minTemps = data.forecast.forecastday.map(d => d.day.mintemp_c);
 
-    new Chart(ctx, {
+    if (weatherChart) {
+      weatherChart.destroy();
+    }
+
+    weatherChart = new Chart(ctx, {
       type: "line",
       data: {
-        labels: labels,
+        labels: data.forecast.forecastday.map(d => d.date),
         datasets: [
-          { label: "Max Temp °C", data: maxTemps, borderColor: "#ff4500", fill: false },
-          { label: "Min Temp °C", data: minTemps, borderColor: "#1e90ff", fill: false }
+          {
+            label: "Max Temp °C",
+            data: data.forecast.forecastday.map(d => d.day.maxtemp_c),
+            fill: false
+          },
+          {
+            label: "Min Temp °C",
+            data: data.forecast.forecastday.map(d => d.day.mintemp_c),
+            fill: false
+          }
         ]
       },
       options: {
         responsive: true,
-        plugins: { legend: { position: "top" } }
+        plugins: {
+          legend: { position: "top" }
+        }
       }
     });
 
   } catch (error) {
-    document.getElementById("current-weather").innerHTML = "⚠️ City not found or API error";
+    document.getElementById("current-weather").innerHTML =
+      "⚠️ " + error.message;
     document.getElementById("hourly-forecast").innerHTML = "";
     document.getElementById("daily-forecast").innerHTML = "";
   }
