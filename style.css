@@ -1,64 +1,125 @@
+* {
+  box-sizing: border-box;
+}
+
 body {
   font-family: Arial, sans-serif;
   margin: 0;
   padding: 0;
-  background: #f7f7f7;
+  background: linear-gradient(135deg, #e3f2fd, #f7f7f7);
   color: #333;
 }
 
+/* Main Container */
 .container {
-  max-width: 700px;
+  max-width: 750px;
   margin: auto;
   padding: 20px;
   text-align: center;
 }
 
+/* Heading */
 h1 {
   margin-bottom: 20px;
   color: #1e90ff;
 }
 
+h3 {
+  margin-top: 30px;
+  margin-bottom: 10px;
+  color: #444;
+}
+
+/* Search Box */
+.search-box {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+}
+
 .search-box input {
   padding: 10px;
   width: 60%;
-  border-radius: 5px;
+  min-width: 200px;
+  border-radius: 6px;
   border: 1px solid #ccc;
+  outline: none;
+}
+
+.search-box input:focus {
+  border-color: #1e90ff;
 }
 
 .search-box button {
   padding: 10px 15px;
   border: none;
-  border-radius: 5px;
+  border-radius: 6px;
   background: #1e90ff;
   color: white;
   cursor: pointer;
-  margin-left: 5px;
+  transition: background 0.3s;
 }
 
+.search-box button:hover {
+  background: #187bcd;
+}
+
+/* Current Weather Card */
 .weather-card {
   background: white;
-  padding: 15px;
+  padding: 18px;
   margin: 20px 0;
-  border-radius: 10px;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.12);
 }
 
+/* Forecast Rows */
 .forecast-row {
   display: flex;
   overflow-x: auto;
   padding: 10px 0;
+  scrollbar-width: thin;
 }
 
+.forecast-row::-webkit-scrollbar {
+  height: 6px;
+}
+
+.forecast-row::-webkit-scrollbar-thumb {
+  background: #ccc;
+  border-radius: 10px;
+}
+
+/* Forecast Items */
 .forecast-item {
-  min-width: 90px;
+  min-width: 110px;
   background: white;
-  margin: 0 5px;
-  padding: 10px;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  margin: 0 6px;
+  padding: 12px 8px;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
   flex-shrink: 0;
 }
 
 .forecast-item p {
-  margin: 5px 0;
+  margin: 6px 0;
+  font-size: 14px;
+}
+
+/* Chart */
+canvas {
+  margin-top: 20px;
+  max-width: 100%;
+}
+
+/* Mobile Responsive */
+@media (max-width: 600px) {
+  .search-box input {
+    width: 100%;
+  }
+
+  .search-box button {
+    width: 100%;
+  }
 }
